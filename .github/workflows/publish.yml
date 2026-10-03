@@ -1,0 +1,31 @@
+# Publica, uma vez por dia (e sob demanda), a base de segurança assinada pela plataforma
+# ArchGenerator como release `data-YYYYMMDD-HHMM` (STORY-710). Endurecido de propósito:
+# só `contents: write`, sem gatilho de pull request, sem inputs, sem expressões dentro de `run:`
+# e nenhum segredo além do GITHUB_TOKEN do próprio repositório.
+name: publish
+
+on:
+  schedule:
+    - cron: '30 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: publish
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: identidade do bot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: baixar, conferir e publicar
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/publish.mjs

@@ -1,0 +1,9 @@
+{
+  "keys": [
+    {
+      "keyId": "1fe9cbeaa094d62e",
+      "publicKey": "16be422ff1e9b0339792ecdfa46b46c2bf56997d8eccb5c5d408facb5be746f5",
+      "comment": "ArchGenerator security data (STORY-710), ed25519, 2026-10-02"
+    }
+  ]
+}
